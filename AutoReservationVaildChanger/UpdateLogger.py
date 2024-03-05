@@ -14,16 +14,18 @@ class UpdateLogger():
     업데이트 로그에 대한 클래스
     """
     @staticmethod
-    def AddUpdateLog(sheet: gspread.Worksheet, logtype: LogType, sheetid_hyperlink: str, HyperLinkCell: str, BoothNumber: str, IsOwnAuthor: bool = False, AuthorNickName: str = None):
+    def AddUpdateLog(sheet: gspread.Worksheet, logtype: LogType, updatetime: datetime, sheetid_hyperlink: str, HyperLinkCell: str, BoothNumber: str = None, BoothName: str = None, IsOwnAuthor: bool = False, AuthorNickName: str = None):
         """
         업데이트 로그를 추가합니다.
         
         - 매개 변수
             :param sheet: 업데이트 로그를 추가할 시트
             :param logtype: 업데이트 로그의 추가 타입으로 선입금인 Pre_Order, 통판인 Mail_Order 둘 중 하나의 값입니다.
+            :param updatetime: 업데이트 시간
             :param sheetid_hyperlink: 업데이트된 부스 정보가 위치한 시트의 Id
             :param HyperLinkCell: 업데이트된 부스 정보의 선입금 또는 통판 또는 인포 링크가 담긴 셀의 a1Notation 값
-            :param BoothNumber: 업데이트된 부스의 부스 번호
+            :param BoothNumber: (선택) 업데이트된 부스의 부스 번호, 이 값이 None인 경우, BoothName은 None이 아니여야 합니다.
+            :param BoothName: (선택) 업데이트된 부스의 부스 이름, 이 값이 None인 경우, BoothNumber은 None이 아니여야 합니다.
             :param IsOwnAuthor: (선택) 업데이트된 정보가 특정 작가님별로 업데이트된 정보인지 여부입니다. 기본값은 False입니다.
             :param AuthorNickName: (선택) IsOwnAuthor의 값이 True인 경우에 사용되며, 작가님의 닉네임입니다. 기본값은 None입니다.
         """
@@ -44,15 +46,27 @@ class UpdateLogger():
         updatelog_string = f''
         if logtype == LogType.Pre_Order:
             if IsOwnAuthor == True:
-                updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothNumber} 부스의 {AuthorNickName} 작가님의 선입금 링크 추가")'
+                if BoothNumber != None:
+                    updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothNumber} 부스의 {AuthorNickName} 작가님의 선입금 링크 추가")'
+                elif BoothNumber != None:
+                    updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothName} 부스의 {AuthorNickName} 작가님의 선입금 링크 추가")'
             else:
-                updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothNumber} 부스의 선입금 링크 추가")'
+                if BoothNumber != None:
+                    updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothNumber} 부스의 선입금 링크 추가")'
+                elif BoothName != None:
+                    updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothName} 부스의 선입금 링크 추가")'
 
         elif logtype == LogType.Mail_Order:
             if IsOwnAuthor == True:
-                updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothNumber} 부스의 {AuthorNickName} 작가님의 통판 링크 추가")'
+                if BoothNumber != None:
+                    updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothNumber} 부스의 {AuthorNickName} 작가님의 통판 링크 추가")'
+                elif BoothNumber != None:
+                    updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothName} 부스의 {AuthorNickName} 작가님의 통판 링크 추가")'
             else:
-                updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothNumber} 부스의 통판 링크 추가")'
+                if BoothNumber != None:
+                    updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothNumber} 부스의 통판 링크 추가")'
+                elif BoothName != None:
+                    updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothName} 부스의 통판 링크 추가")'
 
         updatelog_data.append(updatelog_string)
         

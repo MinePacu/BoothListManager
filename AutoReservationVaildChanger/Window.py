@@ -266,7 +266,7 @@ def Add_new_BoothData(BoothNumber: str, BoothName: str, Genre: str, Yoil: str, I
        gspread_formatting.format_cell_range(sheet, f"{BoothNumber_Col_Alphabet}{len(booth_list)}:{Etc_Point_Col_Alphabet}{len(booth_list)}", fmt)
     
        updatetime = UpdateLastestTime()
-       UpdateLogger.AddUpdateLog(updatesheet, LogType.Pre_Order, updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{len(booth_list) + 1}', BoothNumber)
+       UpdateLogger.AddUpdateLog(updatesheet, LogType.Pre_Order, updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{len(booth_list) + 1}', None, BoothName)
        
        if MapSheetNumber != None:
             SetLinkToMap(BoothNumber)
@@ -419,7 +419,7 @@ def Modify_Existed_Row(BoothNum_Cell_Row: int, BoothNumber: str, BoothName: str,
     BoothListSheet.update_cells(update_cell, value_input_option=ValueInputOption.user_entered)
     return
     
-def EditInfoCell(infoCell: str, InfoLabel: str, InfoLink: str, PreOrderLinkCell_Count: int = 1):
+def EditInfoCell(infoCell: str, InfoLabel: str, InfoLink: str, PreOrderLinkCell_Count: int = 1, mode: int = 0):
     """
     특성 셀의 인포를 수정합니다.
     
@@ -438,7 +438,7 @@ def EditInfoCell(infoCell: str, InfoLabel: str, InfoLink: str, PreOrderLinkCell_
     if PreOrderLinkCell_Count != 1:
         BoothListSheet.merge_cells(f'{rowcol_to_a1(rowcol[0], rowcol[1])}:{rowcol_to_a1(rowcol[0] + (PreOrderLinkCell_Count - 1), rowcol[1])}', MergeType.merge_columns)
     
-def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str, PreOrder_Link: str):
+def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str, PreOrder_Link: str, mode: int = 0):
     """
     특정 셀의 선입금 마감 일자 및 선입금 링크를 수정합니다.
     
@@ -447,12 +447,12 @@ def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str,
         :param PreOrder_Date: 수정된 선입금 마감 일자
         :param PreOrder_Label: 수정된 선입금 링크의 라벨
         :param PreOrder_Link: 수정된 선입금 링크
+        :param mode (선택): 이 값이 0이면 PreOrderCell 자리에 선입금 링크를 업데이트하며, 1이면 PreOrderCell 셀의 열의 다음 열에 새 선입금 링크를 추가합니다. 기본값은 0입니다.
     """
     sheet = client_.open_by_key(spreadsheetId)
     BoothListSheet = sheet.get_worksheet(sheetNumber)
     
     PreOrderCell_rowcol = a1_to_rowcol(PreOrderCell)
-    BoothListSheet.update_cell(PreOrderCell_rowcol[0], PreOrderCell_rowcol[1], f'=HYPERLINK("{PreOrder_Link}", "{PreOrder_Label}")')
     
     # 부스 선입금 마감 일자 함수 생성 (다중 줄 포함)
     NewPreOrderDate = f''
@@ -471,7 +471,11 @@ def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str,
     else:
         NewPreOrderDate = PreOrder_Date
         
-    BoothListSheet.update_cell(PreOrderCell_rowcol[0], PreOrderCell_rowcol[1] - 1, NewPreOrderDate)
+    if mode == 1:
+        BoothListSheet.insert_row(['', '', '', '', '', NewPreOrderDate, f'=HYPERLINK("{PreOrder_Link}", "{PreOrder_Label}")', ''], PreOrderCell_rowcol.row + 1, ValueInputOption.user_entered)
+    else:
+        BoothListSheet.update_cell(PreOrderCell_rowcol[0], PreOrderCell_rowcol[1] - 1, NewPreOrderDate)
+        BoothListSheet.update_cell(PreOrderCell_rowcol[0], PreOrderCell_rowcol[1], f'=HYPERLINK("{PreOrder_Link}", "{PreOrder_Label}")')
 
 def UpdateLastestTime():
     """
@@ -512,6 +516,7 @@ def SetLinkToMap(BoothNumber: str):
             MapLocationData = BoothMapSheet.find(Number)
             BoothLocations.append(rowcol_to_a1(MapLocationData.row, MapLocationData.col))
             
+            # 각 지도 셀에 부스 리스트의 셀 위치를 링크
             BoothMapSheet.update_acell(rowcol_to_a1(MapLocationData.row, MapLocationData.col), f'=HYPERLINK("#gid{BoothListSheet.id}&range={rowcol_to_a1(BoothNumberCell_Data.row, BoothNumberCell_Data.col)}", "{MapLocationData.value}")')
             
         BoothListSheet.update_acell(rowcol_to_a1(BoothNumberCell_Data.row, BoothNumberCell_Data.col), f'=HYPERLINK("#gid={BoothMapSheet.id}&range={BoothLocations[0]}:{BoothLocations[len(BoothLocations) - 1]}", "{BoothNumber}")')
@@ -883,7 +888,7 @@ class MainWindow(tk.Tk):
         result_cell = sheet.find(Search_booth_number)
     
         if result_cell == None:
-            print("Search_Booth_WithBoothNumber : 검색 겱과가 없습니다.")
+            print("Search_Booth_WithBoothNumber : 검색 결과가 없습니다.")
             self.printDebugLine()
             messagebox.showinfo('검색', message='검색 결과가 없습니다.')
             return -1
@@ -1160,8 +1165,12 @@ class MainWindow(tk.Tk):
         treeview["show"] = "headings"
         
         
-        Button_Add_info = tk.Button(self.new_window, text="선입금 링크 추가하기", command=self.AddPreOrderWindow)
-        Button_Edit_info = tk.Button(self.new_window, text="선입금 링크 수정하기")
+        Button_Add_info = tk.Button(self.new_window, text="선입금 링크 추가하기", command= lambda: self.AddPreOrderWindow(treeview.item(treeview.focus()).get('values')[2], 
+                                                                                                                 None, 
+                                                                                                                 f'{treeview.item(treeview.focus()).get("values")[0]} : {treeview.item(treeview.focus()).get("values")[1]} 부스의 선입금 링크 추가'))
+        Button_Edit_info = tk.Button(self.new_window, text="선입금 링크 수정하기", command= lambda: self.AddPreOrderWindow(treeview.item(treeview.focus()).get('values')[2], 
+                                                                                                                  treeview.item(treeview.focus()).get('values'), 
+                                                                                                                  f'{treeview.item(treeview.focus()).get("values")[0]} : {treeview.item(treeview.focus()).get("values")[1]} 부스의 {treeview.item(treeview.focus()).get("values")[2]} 셀의 선입금 링크 수정'))
         
         Button_Add_info.grid(column=0, row=1, padx=10, pady=5, sticky="e")
         Button_Edit_info.grid(column=0, row=2, padx=10, pady=5, sticky="e")
@@ -1234,12 +1243,13 @@ class MainWindow(tk.Tk):
 
         Add_Info_Button.grid(column=0, row=4, padx=10, pady=5, sticky='e')
         
-    def AddPreOrderWindow(self, PreOrderCell_a1: str, Title: str = None):
+    def AddPreOrderWindow(self, PreOrderCell_a1: str, selectedItem: list = None, Title: str = None):
         """
         이미 있는 부스의 선입금 링크를 추가하는 tkinter 기반의 창을 엽니다.
         
         - 매개 변수
             :param PreOrderCell_a1: 선입금 링크가 추가될 셀의 a1Notation 값
+            :param selectedItem (선택): 호출한 함수에서 treeview를 사용하는 경우, 추가 또는 수정한 선입금 링크 데이터의 리스트입니다.
             :param Title (선택): 여는 창의 제목입니다. 기본값은 None입니다.
         """
         self.wm_attributes("-disabled", True)
@@ -1265,7 +1275,19 @@ class MainWindow(tk.Tk):
         Add_PreOrder_Link_Label = tk.Label(self.third_window, text='선입금 링크')
         Add_PreOrder_Link_Entry = tk.Entry(self.third_window)
         
-        Add_PreOrder_Button = tk.Button(self.third_window, text='선입금 링크 추가', command= lambda: EditPreOrderCell(PreOrderCell_a1, Add_PreOrderDate.get(), Add_PreOrder_Label_Entry.get(), Add_PreOrder_Link_Entry.get()))
+        button_Text = ''
+        if "수정" in Title:
+            button_Text = '선입금 링크 수정'
+        else:
+            button_Text = '선입금 링크 추가'
+            
+        mode = 0
+        if "수정" in button_Text:
+            mode = 1
+        else:
+            mode = 0
+            
+        Add_PreOrder_Button = tk.Button(self.third_window, text=button_Text, command= lambda: EditPreOrderCell(PreOrderCell_a1, Add_PreOrderDate.get(), Add_PreOrder_Label_Entry.get(), Add_PreOrder_Link_Entry.get(), mode))
         
         Add_PreOrderDate_Label.grid(column=0, row=0, padx=10, pady=5, sticky='w')
         Add_PreOrderDate.grid(column=0, row=1, padx=10, pady=5, ipadx=170)
@@ -1277,6 +1299,11 @@ class MainWindow(tk.Tk):
         Add_PreOrder_Link_Entry.grid(column=0, row=5, padx=10, pady=5, ipadx=170)
 
         Add_PreOrder_Button.grid(column=0, row=6, padx=10, pady=5, sticky='e')
+        
+        if selectedItem != None:
+            Add_PreOrderDate.insert(0, selectedItem[3])
+            Add_PreOrder_Label_Entry.insert(0, selectedItem[4])
+            Add_PreOrder_Link_Entry.insert(0, selectedItem[5])
 
     def printDebugLine(self):
         print("=========================================================================")
