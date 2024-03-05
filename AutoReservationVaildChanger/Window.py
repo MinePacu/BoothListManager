@@ -3,6 +3,7 @@ from locale import LC_ALL
 import tkinter as tk
 from tkinter import Entry, ttk
 import re
+import clipboard
 from tkinter import messagebox
 from typing import Collection
 import gspread
@@ -440,7 +441,7 @@ def EditInfoCell(infoCell: str, InfoLabel: str, InfoLink: str, PreOrderLinkCell_
     
 def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str, PreOrder_Link: str, mode: int = 0):
     """
-    특정 셀의 선입금 마감 일자 및 선입금 링크를 수정합니다.
+    특정 셀의 선입금 마감 일자 및 선입금 링크를 수정합니다. 이 함수는 부스가 이미 있는 상태에서 새로 선입금 부스를 추가하거나 수정할 때 사용됩니다.
     
     - 매개 변수
         :param PreOrderCell: 선입금 링크가 있는 셀의 a1Notation 값
@@ -521,6 +522,17 @@ def SetLinkToMap(BoothNumber: str):
             
         BoothListSheet.update_acell(rowcol_to_a1(BoothNumberCell_Data.row, BoothNumberCell_Data.col), f'=HYPERLINK("#gid={BoothMapSheet.id}&range={BoothLocations[0]}:{BoothLocations[len(BoothLocations) - 1]}", "{BoothNumber}")')
 
+def CopyInfoHyperLinkToClipBoard(InfoLabel: str, InfoLink: str):
+    """
+    설정한 인포 라벨, 인포 링크로 하이퍼링크를 만들어 클립보드에 복사합니다.
+    
+    - 메게 변수
+        :param InfoLabel: 하이퍼링크로 만들 인포 라벨
+        :param InfoLink: 하이퍼링크로 만들 인포 링크
+    """
+    infoText = f'=HYPERLINK("{InfoLink}", "{InfoLabel}")'
+    clipboard.copy(infoText)
+    print("CopyInfoHyperLinkToClipBoard : 인포 링크가 클립보드에 복사되었습니다.")
 
 # 부스들의 열 리스트 설정 (해당 변수들은 예시로 제3회 일러스타 페스의 값들임)
 thrid_illustarfes_alphabet_list = list(ascii_uppercase)
@@ -603,10 +615,12 @@ class MainWindow(tk.Tk):
         Add_Row_Button = tk.Button(self, text='새 부스 추가하기', command= lambda: self.Open_AddorModify_Pre_Order_boothData_window(0))
         Modify_Existed_Row_Button = tk.Button(self, text='부스 번호로 검색하여 부스 수정하기', command=self.Open_searchWindow_With_BoothNum)
         Modify_Existed_Row_Button2 = tk.Button(self, text='부스 이름으로 검색하여 부스 수정하기', command=self.Open_searchWindow_With_BoothName)
+        GetInfoHyperLink_Button = tk.Button(self, text='인포 하이퍼링크 바로 만들기', command=self.Open_GetInfoHyperLink_Window)
 
         Add_Row_Button.pack(side=tk.LEFT, padx=10, pady=10)
         Modify_Existed_Row_Button.pack(side=tk.LEFT, padx=10, pady=10)
         Modify_Existed_Row_Button2.pack(side=tk.LEFT, padx=10, pady=10)
+        GetInfoHyperLink_Button.pack(side=tk.LEFT, padx=10, pady=10)
         
     def Close_newwindow(self):
         self.wm_attributes("-disabled", False)
@@ -783,7 +797,7 @@ class MainWindow(tk.Tk):
         Option_Thing = tk.OptionMenu(self.new_window, Option_variable, *OptionList)
         Option_Thing.config(width=20)
         
-        Button_Search = tk.Button(self.new_window, text='검색하기', command= lambda: self.Search_Booth_WithBoothNumber(Text_SearchToBoothNum.get().upper(), Option_variable.get()))
+        Button_Search = tk.Button(self.new_window, text='검색하기', command= lambda: self.Search_Booth_WithBoothNumber(Text_SearchToBoothNum.get(), Option_variable.get()))
     
         label_SearchToBoothNum.grid(column = 0, row=0, padx=10, pady=2.5, sticky="w")
         Text_SearchToBoothNum.grid(column=0, row=1, padx=10, pady=2.5, ipadx=60)
@@ -1076,7 +1090,7 @@ class MainWindow(tk.Tk):
         self.wm_attributes("-disabled", True)
         
         self.new_window = tk.Toplevel(self)
-        self.new_window.minsize(500, 550)
+        self.new_window.minsize(1000, 335)
 
         self.new_window.transient(self)
         
@@ -1088,21 +1102,21 @@ class MainWindow(tk.Tk):
             self.new_window.title("부스 인포 수정")
         
         treeview = ttk.Treeview(self.new_window, columns=["BoothNumber", "BoothName", "CellLocation", "InfoLabel", "InfoLink"], displaycolumns=["BoothNumber", "BoothName", "CellLocation", "InfoLabel", "InfoLink"])
-        treeview.grid(column = 0, row = 0, padx = 10, ipadx=170)
+        treeview.grid(column = 0, row = 0, padx = 10, ipadx=500)
         
-        treeview.column("BoothNumber", width=30, anchor="center")
+        treeview.column("BoothNumber", width=50, anchor="center")
         treeview.heading("BoothNumber", text="부스 번호", anchor="center")
         
-        treeview.column("BoothName", width=30, anchor="center")
+        treeview.column("BoothName", width=100, anchor="center")
         treeview.heading("BoothName", text="부스 이름", anchor="center")
         
-        treeview.column("CellLocation", width=30, anchor="center")
+        treeview.column("CellLocation", width=50, anchor="center")
         treeview.heading("CellLocation", text="인포 셀 위치", anchor="center")
         
-        treeview.column("InfoLabel", width=100, anchor="center")
+        treeview.column("InfoLabel", width=50, anchor="center")
         treeview.heading("InfoLabel", text="인포 라벨", anchor="center")
         
-        treeview.column("InfoLink", anchor="center")
+        treeview.column("InfoLink", width=750 ,anchor="center")
         treeview.heading("InfoLink", text="인포 링크", anchor="center")
 
         treeview["show"] = "headings"
@@ -1130,7 +1144,7 @@ class MainWindow(tk.Tk):
         self.wm_attributes("-disabled", True)
         
         self.new_window = tk.Toplevel(self)
-        self.new_window.minsize(700, 335)
+        self.new_window.minsize(1000, 335)
 
         self.new_window.transient(self)
         
@@ -1142,15 +1156,15 @@ class MainWindow(tk.Tk):
             self.new_window.title("부스 선입금 링크 수정")
         
         treeview = ttk.Treeview(self.new_window, columns=["BoothNumber", "BoothName", "CellLocation", "PreOrderDate", "PreOrderLabel", "PreOrderLink"], displaycolumns=["BoothNumber", "BoothName", "CellLocation", "PreOrderDate", "PreOrderLabel", "PreOrderLink"])
-        treeview.grid(column = 0, row = 0, padx = 10, ipadx=170)
+        treeview.grid(column = 0, row = 0, padx = 10, ipadx=500)
         
-        treeview.column("BoothNumber", width=30, anchor="center")
+        treeview.column("BoothNumber", width=100, anchor="center")
         treeview.heading("BoothNumber", text="부스 번호", anchor="center")
         
-        treeview.column("BoothName", width=30, anchor="center")
+        treeview.column("BoothName", width=100, anchor="center")
         treeview.heading("BoothName", text="부스 이름", anchor="center")
         
-        treeview.column("CellLocation", width=70, anchor="center")
+        treeview.column("CellLocation", width=50, anchor="center")
         treeview.heading("CellLocation", text="선입금 링크 셀 위치", anchor="center")
         
         treeview.column("PreOrderDate", width=50, anchor="center")
@@ -1304,6 +1318,38 @@ class MainWindow(tk.Tk):
             Add_PreOrderDate.insert(0, selectedItem[3])
             Add_PreOrder_Label_Entry.insert(0, selectedItem[4])
             Add_PreOrder_Link_Entry.insert(0, selectedItem[5])
+
+
+    def Open_GetInfoHyperLink_Window(self):
+        """
+        인포 하이퍼링크를 클립보드에 복사하는 tkinter 기반의 창을 엽니다.
+        """
+        self.wm_attributes("-disabled", True)
+        
+        self.new_window = tk.Toplevel(self)
+        self.new_window.minsize(300, 200)
+
+        self.new_window.transient(self)
+        
+        self.new_window.protocol("WM_DELETE_WINDOW", self.Close_newwindow)
+    
+        self.new_window.title('인포 하이퍼링크 제작 도구')
+        
+        Add_Info_Label = tk.Label(self.new_window, text='인포 라벨')
+        Add_Info_Label_Entry = tk.Entry(self.new_window)
+        
+        Add_Info_Link_Label = tk.Label(self.new_window, text='인포 링크')
+        Add_Info_Link_Entry = tk.Entry(self.new_window)
+        
+        Add_Info_Button = tk.Button(self.new_window, text='클립보드에 복사', command= lambda: CopyInfoHyperLinkToClipBoard(Add_Info_Label_Entry.get(), Add_Info_Link_Entry.get()))
+        
+        Add_Info_Label.grid(column=0, row=0, padx=10, pady=5, sticky='w')
+        Add_Info_Label_Entry.grid(column=0, row=1, padx=10, pady=5, ipadx=170)
+        
+        Add_Info_Link_Label.grid(column=0, row=2, padx=10, pady=5, sticky='w')
+        Add_Info_Link_Entry.grid(column=0, row=3, padx=10, pady=5, ipadx=170)
+
+        Add_Info_Button.grid(column=0, row=4, padx=10, pady=5, sticky='e')
 
     def printDebugLine(self):
         print("=========================================================================")
