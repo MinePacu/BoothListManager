@@ -33,6 +33,7 @@
 | ------ | ------ |
 | [Window.py][Windowfile] | 창 관련 기능 및 대부분의 기능들이 포함된 파일 |
 | [LinkCollector.py][LinkCollectorfile] | 시트에서 하이퍼링크가 지정된 셀들만을 선택하여 정리하도록 하는 기능을 포함하는 파일 |
+| [UpdateLogger.py][UpdateLoggerfile] | 업데이트 기록 시트에 업데이트 내용을 자동으로 추가하는 기능을 포함하는 파일 |
 
 
 ## 라이선스
@@ -58,7 +59,7 @@
 
    [Windowfile]: <https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py>
    [LinkCollectorfile]: <https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/LinkCollector.py>
-   [PlGd]: <https://github.com/joemccann/dillinger/tree/master/plugins/googledrive/README.md>
+   [UpdateLoggerfile]: <https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/UpdateLogger.py>
    [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>
    [PlMe]: <https://github.com/joemccann/dillinger/tree/master/plugins/medium/README.md>
    [PlGa]: <https://github.com/RahulHP/dillinger/blob/master/plugins/googleanalytics/README.md>
