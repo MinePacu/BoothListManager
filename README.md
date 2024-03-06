@@ -1,6 +1,6 @@
 ﻿# BoothListManager
 
-![Static Badge](https://img.shields.io/badge/%ED%98%84%EC%9E%AC_%EC%A0%81%EC%9A%A9%EB%90%9C_%EB%B6%80%EC%8A%A4_%ED%96%89%EC%82%AC-%EC%97%86%EC%9D%8C-yellow)
+![Static Badge](https://img.shields.io/badge/%ED%98%84%EC%9E%AC_%EC%A0%81%EC%9A%A9%EB%90%9C_%EB%8F%99%EC%9D%B8_%ED%96%89%EC%82%AC-%EC%97%86%EC%9D%8C-yellow)
 
 
 그저 개발자가 필요해서 만든 동인 행사에 사용되는 부스 목록 관리 프로그램입니다.
