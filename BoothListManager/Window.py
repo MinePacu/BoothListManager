@@ -439,7 +439,7 @@ def EditInfoCell(infoCell: str, InfoLabel: str, InfoLink: str, PreOrderLinkCell_
     if PreOrderLinkCell_Count != 1:
         BoothListSheet.merge_cells(f'{rowcol_to_a1(rowcol[0], rowcol[1])}:{rowcol_to_a1(rowcol[0] + (PreOrderLinkCell_Count - 1), rowcol[1])}', MergeType.merge_columns)
     
-def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str, PreOrder_Link: str, mode: int = 0):
+def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str, PreOrder_Link: str, mode: int = 1):
     """
     특정 셀의 선입금 마감 일자 및 선입금 링크를 수정합니다. 이 함수는 부스가 이미 있는 상태에서 새로 선입금 부스를 추가하거나 수정할 때 사용됩니다.
     
@@ -448,7 +448,7 @@ def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str,
         :param PreOrder_Date: 수정된 선입금 마감 일자
         :param PreOrder_Label: 수정된 선입금 링크의 라벨
         :param PreOrder_Link: 수정된 선입금 링크
-        :param mode (선택): 이 값이 0이면 PreOrderCell 자리에 선입금 링크를 업데이트하며, 1이면 PreOrderCell 셀의 열의 다음 열에 새 선입금 링크를 추가합니다. 기본값은 0입니다.
+        :param mode (선택): 이 값이 1이면 PreOrderCell 자리에 선입금 링크를 업데이트하며, 0이면 PreOrderCell 셀의 열의 다음 열에 새 선입금 링크를 추가합니다. 기본값은 1입니다.
     """
     sheet = client_.open_by_key(spreadsheetId)
     BoothListSheet = sheet.get_worksheet(sheetNumber)
@@ -472,8 +472,8 @@ def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str,
     else:
         NewPreOrderDate = PreOrder_Date
         
-    if mode == 1:
-        BoothListSheet.insert_row(['', '', '', '', '', NewPreOrderDate, f'=HYPERLINK("{PreOrder_Link}", "{PreOrder_Label}")', ''], PreOrderCell_rowcol.row + 1, ValueInputOption.user_entered)
+    if mode == 0:
+        BoothListSheet.insert_row(['', '', '', '', '', '', NewPreOrderDate, f'=HYPERLINK("{PreOrder_Link}", "{PreOrder_Label}")', ''], PreOrderCell_rowcol[0] + 1, ValueInputOption.user_entered)
     else:
         BoothListSheet.update_cell(PreOrderCell_rowcol[0], PreOrderCell_rowcol[1] - 1, NewPreOrderDate)
         BoothListSheet.update_cell(PreOrderCell_rowcol[0], PreOrderCell_rowcol[1], f'=HYPERLINK("{PreOrder_Link}", "{PreOrder_Label}")')
