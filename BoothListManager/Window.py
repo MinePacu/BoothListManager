@@ -198,18 +198,26 @@ def Add_new_BoothData(BoothNumber: str, BoothName: str, Genre: str, Yoil: str, I
     if (Pre_Order_Link != ''):
         NewPreOrderLink = f'=HYPERLINK("{Pre_Order_Link}", "{Pre_Order_label}")'
 
-    NewRowData = ['', BoothNumber, BoothName, NewBoothGenre, Yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink]
     #print(BoothNumber, BoothName, Genre, Yoil, InfoLabel, InfoLink, Pre_Order_label, Pre_Order_Link)
-    
-    client_ = gspread.service_account()
 
     print("Add_new_BoothData : 셀 전체 데이터를 가져오는 중...")
     sh = client_.open_by_key(spreadsheetId)
+    sheet = sh.get_worksheet(sheetNumber)
+    updatesheet = sh.get_worksheet(UpdateLogSheetNumber)
+    booth_list = sh.get_worksheet(sheetNumber).get(f"{BoothNumber_Col_Alphabet}1:{BoothNumber_Col_Alphabet}")
 
+    fmt = gspread_formatting.CellFormat(
+        borders=Borders(
+            top=gspread_formatting.Border("SOLID"), 
+            bottom=gspread_formatting.Border("SOLID"), 
+            left=gspread_formatting.Border("SOLID"), 
+            right=gspread_formatting.Border("SOLID")
+            ),
+        horizontalAlignment='CENTER',
+        verticalAlignment='MIDDLE'
+        )
+    
     if (BoothNumber != ''):
-        sheet = sh.get_worksheet(sheetNumber)
-        booth_list = sh.get_worksheet(sheetNumber).get(f"{BoothNumber_Col_Alphabet}1:{BoothNumber_Col_Alphabet}")
-
         booth_list_tmp = booth_list.copy()
         #print(booth_list_tmp[13])
         j = 0
@@ -221,19 +229,9 @@ def Add_new_BoothData(BoothNumber: str, BoothName: str, Genre: str, Yoil: str, I
             j = j + 1
 
         RecommandLocation = int(GetRecommandLocation(booth_list_tmp, BoothNumber))
-        updatesheet = sh.get_worksheet(UpdateLogSheetNumber)
-        fmt = gspread_formatting.CellFormat(
-            borders=Borders(
-                top=gspread_formatting.Border("SOLID"), 
-                bottom=gspread_formatting.Border("SOLID"), 
-                left=gspread_formatting.Border("SOLID"), 
-                right=gspread_formatting.Border("SOLID")
-                ),
-            horizontalAlignment='CENTER',
-            verticalAlignment='MIDDLE'
-            )
         
         if int(RecommandLocation) == 0:
+            NewRowData = [BoothNumber, BoothName, NewBoothGenre, Yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink, '']            
             sheet.append_row(NewRowData, value_input_option=ValueInputOption.user_entered)
             gspread_formatting.format_cell_range(sheet, f"{BoothNumber_Col_Alphabet}{len(booth_list) + 1}:{Etc_Point_Col_Alphabet}{len(booth_list) + 1}", fmt)
             
@@ -244,6 +242,7 @@ def Add_new_BoothData(BoothNumber: str, BoothName: str, Genre: str, Yoil: str, I
                 SetLinkToMap(BoothNumber)
 
         else: 
+            NewRowData = ['', BoothNumber, BoothName, NewBoothGenre, Yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink, '']
             sheet.insert_row(NewRowData, RecommandLocation, value_input_option=ValueInputOption.user_entered)
             gspread_formatting.format_cell_range(sheet, f"{BoothNumber_Col_Alphabet}{RecommandLocation}:{Etc_Point_Col_Alphabet}{RecommandLocation}", fmt)
  
@@ -262,15 +261,12 @@ def Add_new_BoothData(BoothNumber: str, BoothName: str, Genre: str, Yoil: str, I
             if MapSheetNumber != None:
                 SetLinkToMap(BoothNumber)
     else:
-       sheet = sh.get_worksheet(sheetNumber)
+       NewRowData = [BoothNumber, BoothName, NewBoothGenre, Yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink, '']    
        sheet.append_row(NewRowData, value_input_option=ValueInputOption.user_entered)
        gspread_formatting.format_cell_range(sheet, f"{BoothNumber_Col_Alphabet}{len(booth_list)}:{Etc_Point_Col_Alphabet}{len(booth_list)}", fmt)
     
        updatetime = UpdateLastestTime()
        UpdateLogger.AddUpdateLog(updatesheet, LogType.Pre_Order, updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{len(booth_list) + 1}', None, BoothName)
-       
-       if MapSheetNumber != None:
-            SetLinkToMap(BoothNumber)
             
     print("Add_new_BoothData : 부스 추가 완료")
        
