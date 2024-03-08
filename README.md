@@ -61,25 +61,22 @@ pip install [라이브러리 이름]
 <table>
     <thead>
         <tr>
-            <th>테스트 여부</th>
             <th>테스트 기능</th>
             <th>세부 확인 기능</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>&#9744;</td>
             <td>부스 번호 없이 인포 또는 선입금 링크 혼자 추가하기</td>
             <td rowspan=2>
                 <ul>
-                    <li><code>Add_new_BoothData()</code> 함수에서 <code>GetRecommandLocation()</code> 함수의 <code>0</code> 반환 </li>
-                    <li><code>Add_new_BoothData()</code> 함수에서 Hyperlink 함수와 Textjoin 함수의 적용</li>
-                    <li><code>UpdateLogger.AddUpdateLog()</code> 함수에서 부스 번호가 아닌 부스 이름으로의 로그 추가</li>
+                    <li>&#9744; <code>Add_new_BoothData()</code> 함수에서 <code>GetRecommandLocation()</code> 함수의 <code>0</code> 반환 </li>
+                    <li>&#9744; <code>Add_new_BoothData()</code> 함수에서 Hyperlink 함수와 Textjoin 함수의 적용</li>
+                    <li>&#9744; <code>UpdateLogger.AddUpdateLog()</code> 함수에서 부스 번호가 아닌 부스 이름으로의 로그 추가</li>
                 </ul>
             </td>
         </tr>
         <tr>
-            <td>&#9744;</td>
             <td>부스 번호 없이, 한 부스를 인포와 선입금 링크를 동시에 가진 채로 추가하기</td>
         </tr>
     </tbody>
@@ -89,23 +86,20 @@ pip install [라이브러리 이름]
 <table>
     <thead>
         <tr>
-            <th>테스트 여부</th>
             <th>테스트 기능</th>
             <th>확인 요소</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>&#9744;</td>
             <td>부스 번호 전체 링크하기</td>
             <td>
                 <ul>
-                    <li><code>SetLinkToMap()</code> 함수의 작동</li>
+                    <li>&#9744; <code>SetLinkToMap()</code> 함수의 작동</li>
                 </ul>
             </td>
         </tr>
         <tr>
-            <td>&#9744;</td>
             <td>부스 번호 입력 후 전체 정렬하기 (추가 검토)</td>
             <td/>
         </tr>
@@ -116,26 +110,23 @@ pip install [라이브러리 이름]
 <table>
     <thead>
         <tr>
-            <th>테스트 여부</th>
             <th>테스트 기능</th>
             <th>확인 요소</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>&#9744;</td>
             <td>부스 번호와 함께 인포 또는 선입금 링크 혼자 추가하기</td>
             <td rowspan=2>
                 <ul>
-                    <li><code>Add_new_BoothData()</code> 함수에서 <code>GetRecommandLocation()</code> 함수의 적절한 번호 반환</li>
-                    <li><code>SetLinkToMap()</code> 함수의 작동</li>
-                    <li><code>UpdateLogger.AddUpdateLog()</code> 함수가 부스 번호와 함께 로그 추가</li>
+                    <li>&#9744; <code>Add_new_BoothData()</code> 함수에서 <code>GetRecommandLocation()</code> 함수의 적절한 번호 반환</li>
+                    <li>&#9744; <code>SetLinkToMap()</code> 함수의 작동</li>
+                    <li>&#9744; <code>UpdateLogger.AddUpdateLog()</code> 함수가 부스 번호와 함께 로그 추가</li>
                 </ul>
             </td>
         </tr>
         <tr>
-            <td>&#9744;</td>
-            <td>부스 번호와 함께, 한 부스가 인포와 선입금 링크를 동시에 가진 채로 추가하기</td>
+            <td>&#9744; 부스 번호와 함께, 한 부스가 인포와 선입금 링크를 동시에 가진 채로 추가하기</td>
         </tr>
     </tbody>
 </table>
@@ -144,29 +135,26 @@ pip install [라이브러리 이름]
 <table>
     <thead>
         <tr>
-            <th>테스트 여부</th>
             <th>테스트 기능</th>
             <th>확인 요소</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>&#9744;</td>
             <td>부스 번호 또는 부스 이름으로 부스의 인포 및 선입금 링크 목록 검색</td>
             <td>
                 <ul>
-                    <li><code>Search_Booth_WithBoothNumber()</code> 또는 <code>Search_Booth_WithBoothName()</code> 함수의 적절한 열의 데이터 검색</li>
-                    <li><code>TreeView</code> 요소의 생략 없이 출력</li>
+                    <li>&#9744; <code>Search_Booth_WithBoothNumber()</code> 또는 <code>Search_Booth_WithBoothName()</code> 함수의 적절한 열의 데이터 검색</li>
+                    <li>&#9744; <code>TreeView</code> 요소의 생략 없이 출력</li>
                 </ul>
             </td>
         </tr>
         <tr>
-            <td>&#9744;</td>
             <td>인포 또는 선입금 링크 목록에서 하나를 선택해 수정하기</td>
             <td>
                 <ul>
-                    <li><code>EditInfoCell()</code> 함수, <code>EditPreOrderCell()</code> 함수의 정상 작동</li>
-                    <li>반영된 목록을 다시 업데이트하여 <code>TreeView</code> 요소에 반영(검토 중)</li>
+                    <li>&#9744; <code>EditInfoCell()</code> 함수, <code>EditPreOrderCell()</code> 함수의 정상 작동</li>
+                    <li>&#9744; 반영된 목록을 다시 업데이트하여 <code>TreeView</code> 요소에 반영(검토 중)</li>
                 </ul>
             </td>
         </tr>
