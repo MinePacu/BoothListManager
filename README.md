@@ -63,7 +63,7 @@ pip install [라이브러리 이름]
         <tr>
             <th>테스트 여부</th>
             <th>테스트 기능</th>
-            <th>확인 요소</th>
+            <th>세부 확인 기능</th>
         </tr>
     </thead>
     <tbody>
@@ -72,9 +72,9 @@ pip install [라이브러리 이름]
             <td>부스 번호 없이 인포 또는 선입금 링크 혼자 추가하기</td>
             <td rowspan=2>
                 <ul>
-                    <li>정확한 칸에 추가되었는가</li>
-                    <li>인포 및 선입금 링크의 함수가 잘 적용되었는가</li>
-                    <li>업데이트 로그에 부스 번호가 아닌 부스 이름으로 로그가 잘 생성되었는가</li>
+                    <li>'Add_new_BoothData' 함수에서 'GetRecommandLocation' 함수가 적절한 번호의 반환 </li>
+                    <li>'Add_new_BoothData' 함수에서 Hyperlink 함수와 Textjoin 함수의 적용</li>
+                    <li>'UpdateLogger.AddUpdateLog()' 함수에서 부스 번호가 아닌 부스 이름으로의 로그 추가</li>
                 </ul>
             </td>
         </tr>
