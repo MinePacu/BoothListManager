@@ -69,7 +69,7 @@ pip install [라이브러리 이름]
     <tbody>
         <tr>
             <td>&#9744;</td>
-            <td>부스 번호 없이<br/>인포 또는 선입금 링크 혼자 추가하기</td>
+            <td>부스 번호 없이 인포 또는 선입금 링크 혼자 추가하기</td>
             <td rowspan=2>
                 <ul>
                     <li><code>Add_new_BoothData()</code> 함수에서 <code>GetRecommandLocation()</code> 함수의 <code>0</code> 반환 </li>
@@ -80,7 +80,7 @@ pip install [라이브러리 이름]
         </tr>
         <tr>
             <td>&#9744;</td>
-            <td>부스 번호 없이<br/>한 부스를 인포와 선입금 링크를 동시에 가진 채로 추가하기</td>
+            <td>부스 번호 없이, 한 부스를 인포와 선입금 링크를 동시에 가진 채로 추가하기</td>
         </tr>
     </tbody>
 </table>
@@ -124,10 +124,10 @@ pip install [라이브러리 이름]
     <tbody>
         <tr>
             <td>&#9744;</td>
-            <td>부스 번호와 함께 인포 또는 선입금 링크<br/>혼자 추가하기</td>
+            <td>부스 번호와 함께 인포 또는 선입금 링크 혼자 추가하기</td>
             <td rowspan=2>
                 <ul>
-                    <li><code>Add_new_BoothData()</code> 함수에서<br/><code>GetRecommandLocation()</code> 함수의 적절한 번호 반환</li>
+                    <li><code>Add_new_BoothData()</code> 함수에서 <code>GetRecommandLocation()</code> 함수의 적절한 번호 반환</li>
                     <li><code>SetLinkToMap()</code> 함수의 작동</li>
                     <li><code>UpdateLogger.AddUpdateLog()</code> 함수가 부스 번호와 함께 로그 추가</li>
                 </ul>
@@ -135,7 +135,7 @@ pip install [라이브러리 이름]
         </tr>
         <tr>
             <td>&#9744;</td>
-            <td>부스 번호와 함께<br/>한 부스가 인포와 선입금 링크를 동시에 가진 채로 추가하기</td>
+            <td>부스 번호와 함께, 한 부스가 인포와 선입금 링크를 동시에 가진 채로 추가하기</td>
         </tr>
     </tbody>
 </table>
@@ -152,20 +152,20 @@ pip install [라이브러리 이름]
     <tbody>
         <tr>
             <td>&#9744;</td>
-            <td>부스 번호 또는 부스 이름으로<br/>부스의 인포 및 선입금 링크 목록 검색</td>
+            <td>부스 번호 또는 부스 이름으로 부스의 인포 및 선입금 링크 목록 검색</td>
             <td>
                 <ul>
-                    <li><code>Search_Booth_WithBoothNumber()</code> 또는<br/><code>Search_Booth_WithBoothName()</code> 함수의 적절한 열의 데이터 검색</li>
+                    <li><code>Search_Booth_WithBoothNumber()</code> 또는 <code>Search_Booth_WithBoothName()</code> 함수의 적절한 열의 데이터 검색</li>
                     <li><code>TreeView</code> 요소의 생략 없이 출력</li>
                 </ul>
             </td>
         </tr>
         <tr>
             <td>&#9744;</td>
-            <td>인포 또는 선입금 링크 목록에서<br/>하나를 선택해 수정하기</td>
+            <td>인포 또는 선입금 링크 목록에서 하나를 선택해 수정하기</td>
             <td>
                 <ul>
-                    <li><code>EditInfoCell()</code> 함수,<br/><code>EditPreOrderCell()</code> 함수의 정상 작동</li>
+                    <li><code>EditInfoCell()</code> 함수, <code>EditPreOrderCell()</code> 함수의 정상 작동</li>
                     <li>반영된 목록을 다시 업데이트하여 <code>TreeView</code> 요소에 반영(검토 중)</li>
                 </ul>
             </td>
