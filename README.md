@@ -70,9 +70,10 @@ pip install [라이브러리 이름]
             <td>부스 번호 없이 인포 또는 선입금 링크 혼자 추가하기</td>
             <td rowspan=2>
                 <ul>
-                    <li>&#9744; <code>Add_new_BoothData()</code> 함수에서 <code>GetRecommandLocation()</code> 함수의 <code>0</code> 반환 </li>
-                    <li>&#9744; <code>Add_new_BoothData()</code> 함수에서 Hyperlink 함수와 Textjoin 함수의 적용</li>
-                    <li>&#9744; <code>UpdateLogger.AddUpdateLog()</code> 함수에서 부스 번호가 아닌 부스 이름으로의 로그 추가</li>
+                    <li>&#9744; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L140"><code>Add_new_BoothData()</code></a> 함수에서 
+                    <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L30"><code>GetRecommandLocation()</code></a> 함수의 <code>0</code> 반환 </li>
+                    <li>&#9744; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L140"><code>Add_new_BoothData()</code></a> 함수에서 Hyperlink 함수와 Textjoin 함수의 적용</li>
+                    <li>&#9744; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/UpdateLogger.py#L17"><code>UpdateLogger.AddUpdateLog()</code></a> 함수에서 부스 번호가 아닌 부스 이름으로의 로그 추가</li>
                 </ul>
             </td>
         </tr>
@@ -95,7 +96,7 @@ pip install [라이브러리 이름]
             <td>부스 번호 전체 링크하기</td>
             <td>
                 <ul>
-                    <li>&#9744; <code>SetLinkToMap()</code> 함수의 작동</li>
+                    <li>&#9744; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L492"><code>SetLinkToMap()</code></a> 함수의 작동</li>
                 </ul>
             </td>
         </tr>
@@ -119,9 +120,10 @@ pip install [라이브러리 이름]
             <td>부스 번호와 함께 인포 또는 선입금 링크 혼자 추가하기</td>
             <td rowspan=2>
                 <ul>
-                    <li>&#9744; <code>Add_new_BoothData()</code> 함수에서 <code>GetRecommandLocation()</code> 함수의 적절한 번호 반환</li>
-                    <li>&#9744; <code>SetLinkToMap()</code> 함수의 작동</li>
-                    <li>&#9744; <code>UpdateLogger.AddUpdateLog()</code> 함수가 부스 번호와 함께 로그 추가</li>
+                    <li>&#9744;  <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L140"><code>Add_new_BoothData()</code></a> 함수에서 
+                    <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L30"><code>GetRecommandLocation()</code></a> 함수의 적절한 번호 반환</li>
+                    <li>&#9744; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L492"><code>SetLinkToMap()</code></a> 함수의 작동</li>
+                    <li>&#9744; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/UpdateLogger.py#L17"><code>UpdateLogger.AddUpdateLog()</code></a> 함수가 부스 번호와 함께 로그 추가</li>
                 </ul>
             </td>
         </tr>
@@ -144,7 +146,8 @@ pip install [라이브러리 이름]
             <td>부스 번호 또는 부스 이름으로 부스의 인포 및 선입금 링크 목록 검색</td>
             <td>
                 <ul>
-                    <li>&#9744; <code>Search_Booth_WithBoothNumber()</code> 또는 <code>Search_Booth_WithBoothName()</code> 함수의 적절한 열의 데이터 검색</li>
+                    <li>&#9744; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L846"><code>Search_Booth_WithBoothNumber()</code></a> 또는
+                    <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L979"><code>Search_Booth_WithBoothName()</code></a> 함수의 적절한 열의 데이터 검색</li>
                     <li>&#9744; <code>TreeView</code> 요소의 생략 없이 출력</li>
                 </ul>
             </td>
@@ -153,7 +156,8 @@ pip install [라이브러리 이름]
             <td>인포 또는 선입금 링크 목록에서 하나를 선택해 수정하기</td>
             <td>
                 <ul>
-                    <li>&#9744; <code>EditInfoCell()</code> 함수, <code>EditPreOrderCell()</code> 함수의 정상 작동</li>
+                    <li>&#9744; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L419"><code>EditInfoCell()</code></a> 함수, 
+                    <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L438"><code>EditPreOrderCell()</code></a> 함수의 정상 작동</li>
                     <li>&#9744; 반영된 목록을 다시 업데이트하여 <code>TreeView</code> 요소에 반영(검토 중)</li>
                 </ul>
             </td>
