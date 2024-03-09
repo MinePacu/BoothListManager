@@ -435,7 +435,7 @@ def EditInfoCell(infoCell: str, InfoLabel: str, InfoLink: str, PreOrderLinkCell_
     if PreOrderLinkCell_Count != 1:
         BoothListSheet.merge_cells(f'{rowcol_to_a1(rowcol[0], rowcol[1])}:{rowcol_to_a1(rowcol[0] + (PreOrderLinkCell_Count - 1), rowcol[1])}', MergeType.merge_columns)
     
-def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str, PreOrder_Link: str, mode: int = 1):
+def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str, PreOrder_Link: str, mode: int = 1, treeview: ttk.Treeview = None):
     """
     특정 셀의 선입금 마감 일자 및 선입금 링크를 수정합니다. 이 함수는 부스가 이미 있는 상태에서 새로 선입금 부스를 추가하거나 수정할 때 사용됩니다.
     
@@ -473,6 +473,7 @@ def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str,
     else:
         BoothListSheet.update_cell(PreOrderCell_rowcol[0], PreOrderCell_rowcol[1] - 1, NewPreOrderDate)
         BoothListSheet.update_cell(PreOrderCell_rowcol[0], PreOrderCell_rowcol[1], f'=HYPERLINK("{PreOrder_Link}", "{PreOrder_Label}")')
+                        
 
 def UpdateLastestTime():
     """
@@ -843,7 +844,7 @@ class MainWindow(tk.Tk):
         
         self.new_window.focus_set()
   
-    def Search_Booth_WithBoothNumber(self, BoothNumber: str, Option: str):
+    def Search_Booth_WithBoothNumber(self, BoothNumber: str, Option: str, IsOpenWindow: bool = True):
         """
         해당 부스 번호를 검색하여 수정하기 위한 창을 엽니다. 수정할 요소는 인포, 선입금 링크 둘 중 하나입니다.
         검색 결과가 없는 경우, -1을 반환합니다.
@@ -851,6 +852,7 @@ class MainWindow(tk.Tk):
         - 매개 변수
             :param BoothNumber : 검색하려는 부스의 번호
             :param Option : 검색하여 가져오려는 정보의 종류로 "인포", "선입금 링크" 두 문자열 중 하나입니다.
+            :param IsOpenWindow : 검색한 후 결과 창을 열지 여부입니다. 기본값은 True이며, False이면 검색 결과 창을 열지 않고 검색 결과를 담은 튜플이 반환됩니다.
         """
 
         print("Search_Booth_WithBoothNumber : 셀 전체 데이터를 가져오는 중...")
@@ -941,6 +943,10 @@ class MainWindow(tk.Tk):
                     print("Search_Booth_WithBoothNumber : 디버그 : match_Info : " + str(match_Info[n]))
             
                 self.printDebugLine()
+
+                if IsOpenWindow == False:
+                    return InfoLink_tuple      
+                                
                 self.Close_newwindow()
                 self.Open_Modify_Info_Window(InfoLink_tuple, Title=f'{result_list[1]} : {result_list[2]} 부스의 인포 검색 결과')
                 
@@ -966,6 +972,10 @@ class MainWindow(tk.Tk):
                     print("Search_Booth_WithBoothNumber : 디버그 : match_Info[n] : " + str(match_OrderLink[n]))
                     
                 self.printDebugLine()
+
+                if IsOpenWindow == False:
+                    return OrderLink_tuple
+                                    
                 self.Close_newwindow()
                 self.Open_Modify_PreOrder_Window(OrderLink_tuple, Title=f'{result_list[1]} : {result_list[2]} 부스의 선입금 링크 검색 결과')
             
@@ -976,7 +986,7 @@ class MainWindow(tk.Tk):
 
         #print("Search_Booth_WithBoothNumber : 디버그 : match_Info : " + str(OrderLink_tuple))
 
-    def Search_Booth_WithBoothName(self, BoothName: str, Option: str):
+    def Search_Booth_WithBoothName(self, BoothName: str, Option: str, IsOpenWindow: bool = True):
         """
         부스 이름으로 부스 정보들을 검색하여 수정하기 위한 창을 엽니다. 수정할 요소는 인포, 선입금 링크 둘 중 하나입니다.
         검색 결과가 없는 경우, -1을 반환합니다.
@@ -984,6 +994,7 @@ class MainWindow(tk.Tk):
         - 매개 변수
             :param BoothName : 검색하려는 부스의 이름
             :param Option : 검색하여 가져오려는 정보의 종류로 "인포", "선입금" 두 문자열 중 하나입니다.
+            :param IsOpenWindow : 검색한 후 결과 창을 열지 여부입니다. 기본값은 True이며, False이면 검색 결과 창을 열지 않고 검색 결과를 담은 튜플이 반환됩니다.
         """
         print("Search_Booth_WithBoothName : 셀 전체 데이터를 가져오는 중...")
         sh = client_.open_by_key(spreadsheetId)
@@ -1041,6 +1052,10 @@ class MainWindow(tk.Tk):
                     print("Search_Booth_WithBoothName : 디버그 : match_Info : " + str(match_Info[n]))
             
                 self.printDebugLine()
+
+                if IsOpenWindow == False:
+                    return InfoLink_tuple    
+                
                 self.Close_newwindow()
                 self.Open_Modify_Info_Window(InfoLink_tuple, Title=f'{result_list[1]} : {result_list[2]} 부스의 인포 검색 결과')
                 
@@ -1067,6 +1082,10 @@ class MainWindow(tk.Tk):
                     print("Search_Booth_WithBoothName : 디버그 : match_Info[n] : " + str(match_OrderLink[n]))
                     
                 self.printDebugLine()
+                
+                if IsOpenWindow == False:
+                    return OrderLink_tuple
+                
                 self.Close_newwindow()
                 self.Open_Modify_PreOrder_Window(OrderLink_tuple, Title=f'{result_list[1]} : {result_list[2]} 부스의 선입금 링크 검색 결과')
                 
@@ -1121,8 +1140,11 @@ class MainWindow(tk.Tk):
         Button_Add_info = tk.Button(self.new_window, text='인포 추가하기', command=self.AddInfoWindow)
         Button_Edit_info = tk.Button(self.new_window, text="인포 수정하기")
         
+        Button_Refresh = tk.Button(self.new_window, text='검색 결과 다시 로드하기', command= lambda: self.Refresh_Treeview(treeview, "인포", 1, InfoList[0][0]))
+        
         Button_Add_info.grid(column=0, row=1, padx=10, pady=5, sticky="e")
         Button_Edit_info.grid(column=0, row=2, padx=10, pady=5, sticky="e")
+        Button_Refresh.grid(column=0, row=3, padx=10, pady=5, sticky="e")
         
         for i in range(len(InfoList)):
             treeview.insert('', 'end', text="", value=InfoList[i], iid=i)
@@ -1181,9 +1203,12 @@ class MainWindow(tk.Tk):
         Button_Edit_info = tk.Button(self.new_window, text="선입금 링크 수정하기", command= lambda: self.AddPreOrderWindow(treeview.item(treeview.focus()).get('values')[2], 
                                                                                                                   treeview.item(treeview.focus()).get('values'), 
                                                                                                                   f'{treeview.item(treeview.focus()).get("values")[0]} : {treeview.item(treeview.focus()).get("values")[1]} 부스의 {treeview.item(treeview.focus()).get("values")[2]} 셀의 선입금 링크 수정'))
+
+        Button_Refresh = tk.Button(self.new_window, text='검색 결과 다시 로드하기', command= lambda: self.Refresh_Treeview(treeview, "선입금 링크", 1, PreOrderList[0][0]))
         
         Button_Add_info.grid(column=0, row=1, padx=10, pady=5, sticky="e")
         Button_Edit_info.grid(column=0, row=2, padx=10, pady=5, sticky="e")
+        Button_Refresh.grid(column=0, row=3, padx=10, pady=5, sticky="e")
         
         for i in range(len(PreOrderList)):
             treeview.insert('', 'end', text="", value=PreOrderList[i], iid=i)
@@ -1253,7 +1278,7 @@ class MainWindow(tk.Tk):
 
         Add_Info_Button.grid(column=0, row=4, padx=10, pady=5, sticky='e')
         
-    def AddPreOrderWindow(self, PreOrderCell_a1: str, selectedItem: list = None, Title: str = None):
+    def AddPreOrderWindow(self, PreOrderCell_a1: str, selectedItem: list = None, Title: str = None, treeview: ttk.Treeview = None):
         """
         이미 있는 부스의 선입금 링크를 추가하는 tkinter 기반의 창을 엽니다.
         
@@ -1315,6 +1340,36 @@ class MainWindow(tk.Tk):
             Add_PreOrder_Label_Entry.insert(0, selectedItem[4])
             Add_PreOrder_Link_Entry.insert(0, selectedItem[5])
 
+    def Refresh_Treeview(self, treeview: ttk.Treeview, Option: str, SearchMode: int, SearchBoothNumber: str = None, SearchBoothName: str = None):
+        """
+            Treeview 표의 검색 결과를 다시 가져옵니다. SearchMode가 1 또는 2가 아니면 -1을 반환합니다.
+            
+            - 매개 변수
+                :param treeview: 검색 결과를 다시 로드할 Treeview 오브젝트
+                :param Option: 다시 가져올 검색 결과의 타입으로, "인포", "선입금 링크" 둘 중 하나를 가집니다.
+                :param SearchMode: 검색할 검색어의 타입입니다. 1이면 부스 번호, 2이면 부스 이름입니다.
+                :param SearchBoothNumber (선택): 검색할 부스 번호입니다. SearchMode가 1이면 이 값은 None이 아니여야 합니다.
+                :param SearchBoothName (선택): 검색할 부스 이름입니다. SearchMode가 2이면 이 값은 None이 아니여야 합니다.
+        """        
+        print("Refresh_Treeview : 검색 결과를 다시 로드합니다.")        
+        if SearchMode == 1:
+            refreshed_tuple = self.Search_Booth_WithBoothNumber(SearchBoothNumber, Option, False)
+
+        elif SearchMode == 2:
+            refreshed_tuple = self.Search_Booth_WithBoothName(SearchBoothName, Option, False)
+
+        else:
+            return -1
+
+        for row in treeview.get_children():
+            treeview.delete(row) 
+
+        for i in range(len(refreshed_tuple)):
+            treeview.insert('', 'end', text="", value=refreshed_tuple[i], iid=i)
+            
+        print("Refresh_Treeview : 다시 로드 완료")  
+        self.printDebugLine()
+                
 
     def Open_GetInfoHyperLink_Window(self):
         """
