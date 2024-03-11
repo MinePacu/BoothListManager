@@ -1,11 +1,9 @@
 from datetime import datetime
-from locale import LC_ALL 
 import tkinter as tk
 from tkinter import Entry, ttk
 import re
 import clipboard
 from tkinter import messagebox
-from typing import Collection
 import gspread
 from gspread.cell import rowcol_to_a1
 from gspread.cell import a1_to_rowcol
