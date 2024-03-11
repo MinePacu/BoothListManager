@@ -85,12 +85,12 @@ def GetRecommandLocation(booth_list_tmp: list[str], searchBoothNum: str):
                 # 검색 중인 부스가 여러 개의 행을 병합한 경우
                 if (booth_list_tmp.count(booth_list_tmp[Index]) > 1):
                     iterated_Indexes = find_duplicating_Indexes(booth_list_tmp, booth_list_tmp[Index])
-                    conclusionLocation = str(booth_list_tmp[iterated_Indexes[len(iterated_Indexes) - 1]] + 1)
+                    conclusionLocation = str(booth_list_tmp[iterated_Indexes[len(iterated_Indexes) - 1]] + 1 + 1)
                     IsFind = True
             
                 # 검색 중인 부스가 한 개의 행을 보유한 경우
                 elif (booth_list_tmp.count(booth_list_tmp[Index]) == 1):
-                    conclusionLocation = str(Index + 1) # 0으로 시작해서 + 1
+                    conclusionLocation = str(Index + 1 + 1) # 0으로 시작해서 + 1
                     IsFind = True
                 break;
             except:
@@ -114,12 +114,12 @@ def GetRecommandLocation(booth_list_tmp: list[str], searchBoothNum: str):
                     # 검색 중인 부스가 여러 개의 행을 병합한 경우
                     if (booth_list_tmp.count(booth_list_tmp[Index]) > 1):
                         iterated_Indexes = find_duplicating_Indexes(booth_list_tmp, booth_list_tmp[Index])
-                        conclusionLocation = str(booth_list_tmp[iterated_Indexes[len(iterated_Indexes) - 1]] + 1)
+                        conclusionLocation = str(booth_list_tmp[iterated_Indexes[len(iterated_Indexes) - 1]] + 1 + 1)
                         IsFind = True
             
                     # 검색 중인 부스가 한 개의 행을 보유한 경우
                     elif (booth_list_tmp.count(booth_list_tmp[Index]) == 1):
-                        conclusionLocation = str(Index + 1) # 0으로 시작해서 + 1에 새로 한 행을 만들어야하므로 + 1 한 번 더
+                        conclusionLocation = str(Index + 1 + 1) # 0으로 시작해서 + 1에 새로 한 행을 만들어야하므로 + 1 한 번 더
                         IsFind = True
                     break;
                 except:
@@ -269,7 +269,7 @@ def Add_new_BoothData(BoothNumber: str, BoothName: str, Genre: str, Yoil: str, I
        if NewInfoLink == '' or NewInfoLink == None:
             UpdateLogger.AddUpdateLog(updatesheet, LogType.Pre_Order, updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{len(booth_list) + 1}', None, BoothName)
        else:
-            UpdateLogger.AddUpdateLog(updatesheet, LogType., updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{len(booth_list) + 1}', None, BoothName)
+            UpdateLogger.AddUpdateLog(updatesheet, LogType.Info, updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{len(booth_list) + 1}', None, BoothName)
             
     print("Add_new_BoothData : 부스 추가 완료")
        
