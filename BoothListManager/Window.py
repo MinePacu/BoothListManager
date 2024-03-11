@@ -261,12 +261,15 @@ def Add_new_BoothData(BoothNumber: str, BoothName: str, Genre: str, Yoil: str, I
             if MapSheetNumber != None:
                 SetLinkToMap(BoothNumber)
     else:
-       NewRowData = [BoothNumber, BoothName, NewBoothGenre, Yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink, '']    
+       NewRowData = ['', BoothNumber, BoothName, NewBoothGenre, Yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink, '']    
        sheet.append_row(NewRowData, value_input_option=ValueInputOption.user_entered)
        gspread_formatting.format_cell_range(sheet, f"{BoothNumber_Col_Alphabet}{len(booth_list)}:{Etc_Point_Col_Alphabet}{len(booth_list)}", fmt)
     
        updatetime = UpdateLastestTime()
-       UpdateLogger.AddUpdateLog(updatesheet, LogType.Pre_Order, updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{len(booth_list) + 1}', None, BoothName)
+       if NewInfoLink == '' or NewInfoLink == None:
+            UpdateLogger.AddUpdateLog(updatesheet, LogType.Pre_Order, updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{len(booth_list) + 1}', None, BoothName)
+       else:
+            UpdateLogger.AddUpdateLog(updatesheet, LogType., updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{len(booth_list) + 1}', None, BoothName)
             
     print("Add_new_BoothData : 부스 추가 완료")
        
@@ -591,7 +594,7 @@ UpdateTime_Row_Number = 1
 
 # 업데이트 로그 시트
 UpdateLogSheetName = "업데이트 내용"
-UpdateLogSheetNumber = 1
+UpdateLogSheetNumber = 2
 
 # 행사 지도 시트
 MapSheetNumber = None

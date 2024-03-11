@@ -8,6 +8,7 @@ import gspread_formatting
 class LogType(Enum):
     Pre_Order = 1
     Mail_Order = 2
+    Info = 3
 
 class UpdateLogger():
     """
@@ -67,7 +68,19 @@ class UpdateLogger():
                     updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothNumber} 부스의 통판 링크 추가")'
                 elif BoothName != None:
                     updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothName} 부스의 통판 링크 추가")'
-
+                    
+        elif logtype == LogType.Info:
+            if IsOwnAuthor == True:
+                if BoothNumber != None:
+                    updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothNumber} 부스의 {AuthorNickName} 작가님의 인포 추가")'
+                elif BoothNumber != None:
+                    updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothName} 부스의 {AuthorNickName} 작가님의 인포 추가")'
+            else:
+                if BoothNumber != None:
+                    updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothNumber} 부스의 인포 추가")'
+                elif BoothName != None:
+                    updatelog_string = f'=HYPERLINK("#gid={sheetid_hyperlink}&range={HyperLinkCell}", "{BoothName} 부스의 인포 추가")'
+                    
         updatelog_data.append(updatelog_string)
         
         sheet.insert_row(updatelog_data, updatelog_Lastest_Low, value_input_option=ValueInputOption.user_entered)

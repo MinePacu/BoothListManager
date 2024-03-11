@@ -70,10 +70,10 @@ pip install [라이브러리 이름]
             <td>부스 번호 없이 인포 또는 선입금 링크 혼자 추가하기</td>
             <td rowspan=2>
                 <ul>
-                    <li>&#9744; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L140"><code>Add_new_BoothData()</code></a> 함수에서 
+                    <li>&#9745; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L140"><code>Add_new_BoothData()</code></a> 함수에서 
                     <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L30"><code>GetRecommandLocation()</code></a> 함수의 <code>0</code> 반환 </li>
-                    <li>&#9744; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L140"><code>Add_new_BoothData()</code></a> 함수에서 Hyperlink 함수와 Textjoin 함수의 적용</li>
-                    <li>&#9744; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/UpdateLogger.py#L17"><code>UpdateLogger.AddUpdateLog()</code></a> 함수에서 부스 번호가 아닌 부스 이름으로의 로그 추가</li>
+                    <li>&#9745; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/Window.py#L140"><code>Add_new_BoothData()</code></a> 함수에서 Hyperlink 함수와 Textjoin 함수의 적용</li>
+                    <li>&#9745; <a href="https://github.com/MinePacu/BoothListManager/blob/master/BoothListManager/UpdateLogger.py#L17"><code>UpdateLogger.AddUpdateLog()</code></a> 함수에서 부스 번호가 아닌 부스 이름으로의 로그 추가</li>
                 </ul>
             </td>
         </tr>
