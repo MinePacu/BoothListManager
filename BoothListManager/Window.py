@@ -259,8 +259,8 @@ def Add_new_BoothData(BoothNumber: str, BoothName: str, Genre: str, Yoil: str, I
             if MapSheetNumber != None:
                 SetLinkToMap(BoothNumber)
     else:
-       NewRowData = ['', BoothNumber, BoothName, NewBoothGenre, Yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink, '']    
-       sheet.append_row(NewRowData, value_input_option=ValueInputOption.user_entered)
+       NewRowData = ['', BoothNumber, BoothName, NewBoothGenre, Yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink, '']
+       sheet.insert_row(NewRowData, 3, value_input_option=ValueInputOption.user_entered)
        gspread_formatting.format_cell_range(sheet, f"{BoothNumber_Col_Alphabet}{len(booth_list)}:{Etc_Point_Col_Alphabet}{len(booth_list)}", fmt)
     
        updatetime = UpdateLastestTime()
@@ -557,19 +557,22 @@ seoul_comic_alphabet_max_count_dict = dict(zip(seoul_comic_alphabet_list, seoul_
 # 부스 목록 시트의 Id
 test_illustar_fes_sheet = "1CJ-K_6nBLhgyPbVSKSuq5T9tHAF-RT80WKLDmAI5NeQ"
 test_seoul_comic_sheet_id = "1-lbwfQONKVZ9wD5HXpCjiQ6gElYYU-RZ3ziD0LdrnyE"
+test_illustar_fes_inMay_sheet = "1TmZxEkJW17d0I1MmfNyzIIxjh1n_en1DKrwsbk2OzjM"
 
-spreadsheetId = test_illustar_fes_sheet
+spreadsheetId = test_illustar_fes_inMay_sheet
 
 
 # 부스 목록 시트 안에서 선입금 시트
 sheetName_illustar_fes = "선입금, 통판, 인포 목록의 사본"
+sheetName_illustar_fes_InMay = "선입금 목록"
 sheetNumber_illustar_fes = 1
+sheetNumber_illustar_fes_InMay = 0
 
 seoul_comic_sheetName = "선입금 목록"
 seoul_comic_sheetNumber = 0
 
-sheetName = sheetName_illustar_fes
-sheetNumber = sheetNumber_illustar_fes
+sheetName = sheetName_illustar_fes_InMay
+sheetNumber = sheetNumber_illustar_fes_InMay
 
 # 선입금 시트 내의 행 인덱싱
 BoothNumber_Col_Number = 2
@@ -592,7 +595,7 @@ UpdateTime_Row_Number = 1
 
 # 업데이트 로그 시트
 UpdateLogSheetName = "업데이트 내용"
-UpdateLogSheetNumber = 2
+UpdateLogSheetNumber = 1
 
 # 행사 지도 시트
 MapSheetNumber = None
