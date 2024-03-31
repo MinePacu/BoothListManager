@@ -23,6 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="LinkCollector.py" />
+    <Compile Include="UpdateDateModule.py" />
     <Compile Include="UpdateLogger.py" />
     <Compile Include="Window.py" />
   </ItemGroup>
