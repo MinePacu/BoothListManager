@@ -1,3 +1,4 @@
+import string
 from datetime import datetime
 import tkinter as tk
 from tkinter import Entry, ttk
@@ -25,7 +26,7 @@ def find_duplicating_Indexes(_List, searchWord: str):
     
     return iterated_index_position_list
        
-def GetRecommandLocation(booth_list_tmp: list[str], searchBoothNum: str):
+def getRecommandLocation(booth_list_tmp: list[str], searchBoothNum: str):
     """
     매개 변수인 부스 번호가 어느 셀에 들어가야할지를 계산하여 반환합니다.
     이미 있는 부스 번호인 경우, 해당 부스 번호가 있는 셀의 위치의 아래 행 위치를 반환합니다.
@@ -135,7 +136,9 @@ def GetRecommandLocation(booth_list_tmp: list[str], searchBoothNum: str):
         IsAlredyExisted = True
         return AlreadyExistedLocation
     
-def Add_new_BoothData(BoothNumber: str, BoothName: str, Genre: str, Yoil: str, InfoLabel: str, InfoLink: str, Pre_Order_Date: str, Pre_Order_label: str, Pre_Order_Link: str):
+def Add_new_BoothData(boothnumber : string, boothname : string, genre : string, yoil : string,
+                        infoLabel : string, infoLink : string, preorder_Date : string,
+                        preorder_Label : string, preorder_Link : string):
     """
     새 부스 데이터를 시트에 추가합니다.
     부스 번호가 있으면, 시트 내에 존재하는 부스 번호와 비교하여 적절한 위치에 새 데이터를 추가합니다.
@@ -153,121 +156,139 @@ def Add_new_BoothData(BoothNumber: str, BoothName: str, Genre: str, Yoil: str, I
         :param Pre_Order_Link: 추가할 부스의 선입금 또는 통판 링크
     """
     
-    # 부스 장르 함수 생성 (다중 줄 포함)
     NewBoothGenre = f''
-    if '//' in Genre:
+    if '//' in genre:
         NewBoothGenre = f'=TEXTJOIN(CHAR(10), 0, '
-        SplitedGenre = re.split('//', Genre)
-        i = 0;
-        for OnelineGenre in SplitedGenre:
-            NewBoothGenre += f'"{OnelineGenre}'
-            if i != len(SplitedGenre) - 1:
-                NewBoothGenre += f'", '
-            else:
-                NewBoothGenre += f'")'
-            i = i + 1
+    SplitedGenre = re.split('//', genre)
+    i = 0
+    for OnelineGenre in SplitedGenre:
+        NewBoothGenre += f'"{OnelineGenre}'
+        if i != len(SplitedGenre) - 1:
+            NewBoothGenre += f'", '
+        else:
+            NewBoothGenre += f'")'
+        i = i + 1
     else:
-        NewBoothGenre = Genre
+        NewBoothGenre = genre
 
     # 부스 선입금 마감 일자 함수 생성 (다중 줄 포함)
     NewPreOrderDate = f''
-    if '//' in Pre_Order_Date:
+    if '//' in preorder_Date:
         NewPreOrderDate = f'=TEXTJOIN(CHAR(10), 0, '
-        SplitedPreOrderDate = re.split('//', Pre_Order_Date)
+        SplitedPreOrderDate = re.split('//', preorder_Date)
         i = 0
         for OnelinePreOrderDate in SplitedPreOrderDate:
             NewPreOrderDate += f'"{OnelinePreOrderDate}'
-            if i != len(SplitedPreOrderDate) - 1:
-                NewPreOrderDate += f'", '
-            else:
-                NewPreOrderDate += f'")'
-            i = i + 1
-        #print(NewPreOrderDate)
+        if i != len(SplitedPreOrderDate) - 1:
+            NewPreOrderDate += f'", '
+        else:
+            NewPreOrderDate += f'")'
+        i = i + 1
+      # print(NewPreOrderDate)
     else:
-        NewPreOrderDate = Pre_Order_Date
+        NewPreOrderDate = preorder_Date
 
     # 부스 인포 링크 함수 생성
     NewInfoLink = f''
-    if (InfoLink != ''):
-        NewInfoLink = f'=HYPERLINK("{InfoLink}", "{InfoLabel}")'
+    if (infoLink != ''):
+        NewInfoLink = f'=HYPERLINK("{infoLink}", "{infoLabel}")'
 
     # 부스 선입금 링크 함수 생성
     NewPreOrderLink = f''
-    if (Pre_Order_Link != ''):
-        NewPreOrderLink = f'=HYPERLINK("{Pre_Order_Link}", "{Pre_Order_label}")'
+    if (preorder_Link != ''):
+        NewPreOrderLink = f'=HYPERLINK("{preorder_Link}", "{preorder_Label}")'
 
-    #print(BoothNumber, BoothName, Genre, Yoil, InfoLabel, InfoLink, Pre_Order_label, Pre_Order_Link)
+    # print(BoothNumber, BoothName, Genre, Yoil, InfoLabel, InfoLink, Pre_Order_label, Pre_Order_Link)
+
 
     print("Add_new_BoothData : 셀 전체 데이터를 가져오는 중...")
     sh = client_.open_by_key(spreadsheetId)
-    sheet = sh.get_worksheet(sheetNumber)
-    updatesheet = sh.get_worksheet(UpdateLogSheetNumber)
-    booth_list = sh.get_worksheet(sheetNumber).get(f"{BoothNumber_Col_Alphabet}1:{BoothNumber_Col_Alphabet}")
+    print(f"sh : {sh}")
 
+    booth_list = sh.get_worksheet(sheetNumber).get(f"{BoothNumber_Col_Alphabet}1:{BoothNumber_Col_Alphabet}")
+    updatesheet = sh.get_worksheet(UpdateLogSheetNumber)
     fmt = gspread_formatting.CellFormat(
-        borders=Borders(
-            top=gspread_formatting.Border("SOLID"), 
-            bottom=gspread_formatting.Border("SOLID"), 
-            left=gspread_formatting.Border("SOLID"), 
-            right=gspread_formatting.Border("SOLID")
-            ),
-        horizontalAlignment='CENTER',
-        verticalAlignment='MIDDLE'
-        )
-    
-    if (BoothNumber != ''):
+              borders=Borders(
+              top=gspread_formatting.Border("SOLID"),
+              bottom=gspread_formatting.Border("SOLID"),
+              left=gspread_formatting.Border("SOLID"),
+              right=gspread_formatting.Border("SOLID")
+          ),
+      horizontalAlignment='CENTER',
+      verticalAlignment='MIDDLE'
+    )
+
+    if (boothnumber != ''):
+        sheet = sh.get_worksheet(sheetNumber)
+
         booth_list_tmp = booth_list.copy()
-        #print(booth_list_tmp[13])
+        # print(booth_list_tmp[13])
         j = 0
         for boothnum in booth_list_tmp:
             if len(boothnum) == 0:
-                booth_list_tmp[j] = booth_list_tmp[j - 1]
+              booth_list_tmp[j] = booth_list_tmp[j - 1]
             if ',' in str(booth_list_tmp[j][0]):
-                booth_list_tmp[j] = booth_list_tmp[j][0].split(", ")
+              booth_list_tmp[j] = booth_list_tmp[j][0].split(", ")
             j = j + 1
 
-        RecommandLocation = int(GetRecommandLocation(booth_list_tmp, BoothNumber))
-        
-        if int(RecommandLocation) == 0:
-            NewRowData = [BoothNumber, BoothName, NewBoothGenre, Yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink, '']            
-            sheet.append_row(NewRowData, value_input_option=ValueInputOption.user_entered)
-            gspread_formatting.format_cell_range(sheet, f"{BoothNumber_Col_Alphabet}{len(booth_list) + 1}:{Etc_Point_Col_Alphabet}{len(booth_list) + 1}", fmt)
-            
-            updatetime = UpdateLastestTime()
-            UpdateLogger.AddUpdateLog(updatesheet, LogType.Pre_Order, updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{len(booth_list) + 1}', BoothNumber)
-            
-            if MapSheetNumber != None:
-                SetLinkToMap(BoothNumber)
+        RecommandLocation = int(getRecommandLocation(booth_list_tmp, boothnumber))
+        NewRowData = ['', boothnumber, boothname, NewBoothGenre, yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink]
 
-        else: 
-            NewRowData = ['', BoothNumber, BoothName, NewBoothGenre, Yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink, '']
+        if int(RecommandLocation) == 0:
+            sheet.append_row(NewRowData, value_input_option=ValueInputOption.user_entered)
+            gspread_formatting.format_cell_range(sheet,
+                                                 f"{BoothNumber_Col_Alphabet}{len(booth_list) + 1}:{Etc_Point_Col_Alphabet}{len(booth_list) + 1}",
+                                                 fmt)
+
+            updatetime = SetUpdateDates()
+            hyperLinkCell = f"CONCATENATE(\"#gid={sheet_.id}&range={Pre_Order_link_Col_Alphabet}\", MATCH(\"{boothname}\", \'{sheet_.title}\'!{BoothName_Col_Alphabet}:{BoothName_Col_Alphabet}, 0))"
+            UpdateLogger.AddUpdateLog(updatesheet, LogType(updateLogType), updatetime, sheet.id,
+                                      hyperLinkCell, boothnumber, LinkName=preorder_Label)
+
+            if MapSheetNumber != None:
+                SetLinkToMap(boothnumber)
+
+        else:
             sheet.insert_row(NewRowData, RecommandLocation, value_input_option=ValueInputOption.user_entered)
-            gspread_formatting.format_cell_range(sheet, f"{BoothNumber_Col_Alphabet}{RecommandLocation}:{Etc_Point_Col_Alphabet}{RecommandLocation}", fmt)
- 
-            updatetime = UpdateLastestTime()
-            UpdateLogger.AddUpdateLog(updatesheet, LogType.Pre_Order, updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{RecommandLocation}', BoothNumber)
-            
+            gspread_formatting.format_cell_range(sheet,
+                                                 f"{BoothNumber_Col_Alphabet}{RecommandLocation}:{Etc_Point_Col_Alphabet}{RecommandLocation}",
+                                                 fmt)
+
+            updatetime = SetUpdateDates()
+            hyperLinkCell = f"CONCATENATE(\"#gid={sheet_.id}&range={Pre_Order_link_Col_Alphabet}\", MATCH(\"{boothname}\", \'{sheet_.title}\'!{BoothName_Col_Alphabet}:{BoothName_Col_Alphabet}, 0))"
+            UpdateLogger.AddUpdateLog(updatesheet, LogType(updateLogType), updatetime, sheet.id,
+                                      hyperLinkCell, boothnumber, LinkName=preorder_Label)
+
             global IsAlredyExisted
             if IsAlredyExisted == True:
-                k = 0
+                k = 0 
                 for k in range(RecommandLocation - 1 - 1, -1, -1):
                     if len(booth_list[k]) != 0:
-                        break;
+                        break
 
-                sheet.merge_cells(f"{BoothNumber_Col_Alphabet}{k + 1}:{Yoil_Col_Alphabet}{RecommandLocation}", MergeType.merge_columns)
-            
+            sheet.merge_cells(f"{BoothNumber_Col_Alphabet}{k + 1}:{Yoil_Col_Alphabet}{RecommandLocation}",
+                              MergeType.merge_columns)
+
             if MapSheetNumber != None:
-                SetLinkToMap(BoothNumber)
+                SetLinkToMap(boothnumber)
+
     else:
-       NewRowData = ['', BoothNumber, BoothName, NewBoothGenre, Yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink, '']
-       sheet.insert_row(NewRowData, 3, value_input_option=ValueInputOption.user_entered)
-       gspread_formatting.format_cell_range(sheet, f"{BoothNumber_Col_Alphabet}{len(booth_list)}:{Etc_Point_Col_Alphabet}{len(booth_list)}", fmt)
-    
-       updatetime = UpdateLastestTime()
-       if NewInfoLink == '' or NewInfoLink == None:
-            UpdateLogger.AddUpdateLog(updatesheet, LogType.Pre_Order, updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{len(booth_list) + 1}', None, BoothName)
-       else:
-            UpdateLogger.AddUpdateLog(updatesheet, LogType.Info, updatetime, sheet.id, f'{Pre_Order_link_Col_Alphabet}{len(booth_list) + 1}', None, BoothName)
+        sheet_ = sh.get_worksheet(sheetNumber)
+        NewRowData = ['', boothnumber, boothname, NewBoothGenre, yoil, NewInfoLink, NewPreOrderDate, NewPreOrderLink]
+        print(f"RowData : {NewRowData}")
+        sheet_.insert_row(NewRowData, sheetStartIndex, value_input_option=ValueInputOption.user_entered)
+        gspread_formatting.format_cell_range(sheet_,
+                                         f"{BoothNumber_Col_Alphabet}{sheetStartIndex}:{Etc_Point_Col_Alphabet}{sheetStartIndex}",
+                                         fmt)
+        gspread_formatting.set_row_height(sheet_, sheetStartIndex, 21 + (14 * dateline_In_aRow))
+
+        updatetime = SetUpdateDates()
+        hyperLinkCell = f"CONCATENATE(\"#gid={sheet_.id}&range={Pre_Order_link_Col_Alphabet}\", MATCH(\"{boothname}\", \'{sheet_.title}\'!{BoothName_Col_Alphabet}:{BoothName_Col_Alphabet}, 0))"
+        UpdateLogger.AddUpdateLog(updatesheet, LogType(updateLogType), updatetime, sheet_.id,
+                                  hyperLinkCell, BoothName=boothname, LinkName=preorder_Label)
+
+        if MapSheetNumber != None:
+            SetLinkToMap(boothnumber)
             
     print("Add_new_BoothData : 부스 추가 완료")
        
@@ -476,19 +497,20 @@ def EditPreOrderCell(PreOrderCell: str, PreOrder_Date: str, PreOrder_Label: str,
         BoothListSheet.update_cell(PreOrderCell_rowcol[0], PreOrderCell_rowcol[1], f'=HYPERLINK("{PreOrder_Link}", "{PreOrder_Label}")')
                         
 
-def UpdateLastestTime():
+def SetUpdateDates():
     """
     시트 내에 있는 마지막 업데이트 시간 셀을 업데이트한 후, 업데이트한 시간을 반환합니다.
     해당 셀의 위치는 a1Notation을 기준으로 셀의 행을 나타내는 전역 변수 BoothNumber_Col_Alphabet, 열을 나타내는 전역 변수 UpdateTime_Row_Number 값에 의해 결정됩니다.
     """
     print("UpdateLastestTime : 셀 전체 데이터를 가져오는 중...")
-    sh = client_.open_by_key(spreadsheetId)
+    sh = gc.open_by_key(spreadsheetId)
     sheet = sh.get_worksheet(sheetNumber)
-    
+
     print("UpdateLastestTime : 업데이트 시간 반영 중...")
     updatetime = datetime.now()
-    sheet.update_acell(f'{BoothNumber_Col_Alphabet}{UpdateTime_Row_Number}', f"마지막 업데이트 시간 : {updatetime.year}. {updatetime.month}. {updatetime.day} {updatetime.hour}:{str(updatetime.minute).zfill(2)}:{str(updatetime.second).zfill(2)}")
-    
+    sheet.update_acell(f'{BoothNumber_Col_Alphabet}{UpdateTime_Row_Number}',
+                       f'마지막 업데이트 시간 : {updatetime.year}. {updatetime.month}. {updatetime.day} {updatetime.hour}:{str(updatetime.minute).zfill(2)}:{str(updatetime.second).zfill(2)}')
+
     return updatetime
 
 def SetLinkToMap(BoothNumber: str):
@@ -603,6 +625,7 @@ MapSheetNumber = None
 # 기타 비교용 변수
 IsAlredyExisted = False
 
+updateLogType = 4
 
 # 근본 gspread 클라이언트
 client_ = gspread.service_account()
